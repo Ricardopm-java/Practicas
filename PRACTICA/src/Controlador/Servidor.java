@@ -11,9 +11,11 @@ public class Servidor {
 
 	private ServerSocket socket;
 
-	public void Servidor() {
-
-	}
+	
+	  public void Servidor() {
+	  
+	  }
+	 
 
 	public Servidor() {
 
@@ -42,6 +44,5 @@ public class Servidor {
 
 		}
 	}
-
 	
 }

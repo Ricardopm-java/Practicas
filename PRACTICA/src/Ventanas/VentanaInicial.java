@@ -22,9 +22,6 @@ public class VentanaInicial extends JFrame {
 	JButton login;
 	String usuario;
 	String contrasena;
-	
-	
-	
 
 	public VentanaInicial() throws HeadlessException {
 		super("Loggin");
@@ -32,8 +29,7 @@ public class VentanaInicial extends JFrame {
 	}
 
 	public void crearVentana() {
-		
-		
+
 		JFrame ventana = new JFrame();
 
 		JPanel principal = new JPanel(new BorderLayout());
@@ -50,56 +46,53 @@ public class VentanaInicial extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				usuario = nombre.getText();
 				contrasena = pass.getText();
+
+				String total = usuario + "#" + contrasena;
+				try {
+					new Cliente().enviar(total);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 
-		String total = usuario + "#" + contrasena;
-		try {
-			new Cliente().enviar(total);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		
 		this.add(principal);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
+
 		pack();
 
 	}
-	
+
 	public void VentanaInicialNOK() {
 		JFrame ventana = new JFrame();
 		JPanel principal = new JPanel();
 		ventana.add(principal);
 		JLabel encabezado = new JLabel("Usuario no encontrado");
 		principal.add(encabezado, BorderLayout.NORTH);
-		
+
 		JPanel izq = new JPanel();
-		
+
 		JButton op1 = new JButton("Reintentar");
-		izq.add(op1,BorderLayout.SOUTH);
+		izq.add(op1, BorderLayout.SOUTH);
 		principal.add(izq, BorderLayout.WEST);
 		op1.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				VentanaInicial nueva = new VentanaInicial();
 				nueva.setVisible(true);
-				
-				
+
 			}
 		});
 		JPanel der = new JPanel();
 		JButton op2 = new JButton("Registro");
 		der.add(op2);
 		op2.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
 					new Cliente().enviar("registro");
 				} catch (IOException e1) {
@@ -107,14 +100,11 @@ public class VentanaInicial extends JFrame {
 					e1.printStackTrace();
 				}
 				new VentanaRegistro().setVisible(true);
-				
-				
+
 			}
 		});
 		principal.add(der, BorderLayout.EAST);
-		
-		
+
 	}
 
-	
 }

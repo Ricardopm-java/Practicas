@@ -1,6 +1,6 @@
 package Vista;
 
-import java.io.BufferedReader;
+import java.io.BufferedReader; 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,9 +25,7 @@ import Ventanas.VentanaMenu;
 import Ventanas.VentanaRegistro;
 import Ventanas.VentanaResena;
 import Ventanas.VentanaSeguir;
-import Ventanas_bis.VentanaMostrar;
-import Ventanas_bis.VentanaOpinionesLugar;
-import Ventanas_bis.VentanaOpinionesUsuario;
+
 
 public class Cliente {
 
@@ -220,7 +218,7 @@ public class Cliente {
 
 		}
 
-		new VentanaMostrar(listado.toString());
+		new Ventanas.VentanaMostrar(listado.toString());
 
 		/*
 		 * try { String mensaje = entrada.readLine(); while (mensaje != null &&
@@ -250,7 +248,7 @@ public class Cliente {
 					if (valor.has("seguir"))
 						seguirOK = valor.get("seguirOK").getAsString();
 					lista.add(new Usuario(seguido, Boolean.parseBoolean(seguirOK)));
-					new VentanaMostrar(lista.toString());
+					new Ventanas.VentanaMostrar(lista.toString());
 				}
 			}
 		}
@@ -260,7 +258,7 @@ public class Cliente {
 
 	public void opinionesUsuario() {
 
-		new VentanaOpinionesUsuario();
+		new Ventanas.VentanaOpinionesUsuario();
 
 		try {
 			String opiniones = entrada.readLine();
@@ -287,7 +285,7 @@ public class Cliente {
 				}
 			}
 
-			new VentanaMostrar(lista.toString());
+			new Ventanas.VentanaMostrar(lista.toString());
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -346,7 +344,7 @@ public class Cliente {
 				}
 			}
 
-			new VentanaMostrar(lista.toString()).setVisible(true);
+			new Ventanas.VentanaMostrar(lista.toString()).setVisible(true);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
