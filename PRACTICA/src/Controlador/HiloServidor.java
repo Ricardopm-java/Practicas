@@ -87,19 +87,18 @@ public class HiloServidor extends Thread {
 		System.out.println(confirmado);
 
 		String login;
-		ArrayList<String> lista = new ArrayList<String>();
+		//ArrayList<String> lista = new ArrayList<String>();
 		if (confirmado) {
-
 			login = "correcto";
 			usuarioNombre = arraylectura[0];
-			lista.add(login);
-
-			enviar(new Gson().toJsonTree(lista).toString());
+			//lista.add(login);
+			enviar(login);
+			System.out.println(login);
 			menuOpciones();
 		}
 		if(confirmado = false) {
 			login = "incorrecto";
-			enviar(new Gson().toJsonTree(lista).toString());
+			enviar(login);
 		}
 		
 		String lecturaNueva = lectura();

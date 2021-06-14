@@ -21,6 +21,7 @@ import Modelo.Opciones;
 import Modelo.Resena;
 import Modelo.Usuario;
 import Ventanas.VentanaInicial;
+import Ventanas.VentanaInicialNOK;
 import Ventanas.VentanaMenu;
 import Ventanas.VentanaRegistro;
 import Ventanas.VentanaResena;
@@ -65,6 +66,11 @@ public class Cliente {
 		 * }
 		 */
 	}
+	
+	public String lectura() throws IOException {
+		String leido = entrada.readLine();
+		return leido;
+	}
 
 	public void enviar(String mensaje) throws IOException {
 		salida.write(mensaje);
@@ -81,28 +87,25 @@ public class Cliente {
 				try {
 					new VentanaInicial().setVisible(true);
 					
-					String mensaje = entrada.readLine(); //login : correcto
+					String mensaje = lectura(); //login : correcto
 					// Usuario y contraseña correctos || usuario no existente quieres
 					// registrarte
-
-					String confirmacion = ""; 
-
-					JsonElement jsonlogueado = new JsonParser().parse(mensaje);
-					if (jsonlogueado.isJsonArray()) {
-						for (JsonElement elemento : jsonlogueado.getAsJsonArray()) {
-							if (elemento.isJsonObject()) {
-								JsonObject valor = elemento.getAsJsonObject();
-								if (valor.has("login"))
-									confirmacion = valor.get("login").getAsString();
-							}
-						}
-					}
-					if (confirmacion.equalsIgnoreCase("correcto")) {
+					System.out.println(mensaje);
+					/*
+					 * String confirmacion = null;
+					 * 
+					 * JsonElement jsonlogueado = new JsonParser().parse(mensaje); if
+					 * (jsonlogueado.isJsonArray()) { for (JsonElement elemento :
+					 * jsonlogueado.getAsJsonArray()) { if (elemento.isJsonObject()) { JsonObject
+					 * valor = elemento.getAsJsonObject(); if (valor.has("login")) confirmacion =
+					 * valor.get("login").getAsString(); } } }
+					 */
+					if (mensaje.equalsIgnoreCase("correcto")) {
 						
 						menu();
 						seguir = false;
 					} else {
-						new VentanaInicial().VentanaInicialNOK();
+						new VentanaInicialNOK().setVisible(true);
 						if(entrada.readLine().equalsIgnoreCase("registrado")) {
 							menu();
 						}
@@ -367,7 +370,7 @@ public class Cliente {
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		new Cliente().menuInicial();
 
 	}

@@ -1,6 +1,7 @@
 package DAO;
 
-import java.sql.Connection;
+import java.sql.CallableStatement;
+import java.sql.Connection; 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,13 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.mysql.cj.jdbc.CallableStatement;
-import com.mysql.cj.jdbc.CallableStatement.CallableStatementParamInfo;
-import com.mysql.cj.jdbc.JdbcConnection;
 
 import Modelo.BBDD;
 import Modelo.Resena;
 import Modelo.Usuario;
+import oracle.jdbc.OracleCallableStatement;
 
 public class ResenaDAO implements DAO {
 	
@@ -40,7 +39,7 @@ public class ResenaDAO implements DAO {
 		try {
 			Connection conn = BBDD.get();
 			//PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
-			CallableStatement st = (CallableStatement) conn.prepareCall( "{REGISTRO.REGISTRAR_RESENAS (?,?,?,?,?)}");
+			OracleCallableStatement st = (OracleCallableStatement) conn.prepareCall("{CALL REGISTRO.REGISTRAR_RESENAS (?,?,?,?,?)}");
 			
 			st.setString(1, resena.getUsuario());
 			st.setString(2, resena.getLugar());
@@ -76,7 +75,7 @@ public class ResenaDAO implements DAO {
 		
 		try {
 			Connection conn = BBDD.get();
-			CallableStatement st = (CallableStatement) conn.prepareCall( "{CALL REGISTRO.F_RESENASPORLUGAR (?,?,?,?,?) }");
+			CallableStatement st = conn.prepareCall( "{CALL REGISTRO.F_RESENASPORLUGAR (?,?,?,?,?) }");
 			st.registerOutParameter(1, Types.VARCHAR);
 			st.registerOutParameter(2, Types.VARCHAR);
 			st.registerOutParameter(3, Types.VARCHAR);
@@ -84,8 +83,6 @@ public class ResenaDAO implements DAO {
 			
 			st.setString(5, lugar);
 			ResultSet rs = st.executeQuery();
-				
-			
 			
 			while(rs.next()) {
 				
