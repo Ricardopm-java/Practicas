@@ -16,9 +16,9 @@ import Vista.Cliente;
 public class VentanaSeguir extends JFrame {
 
 	private String nombreASeguir;
-	private Cliente cliente;
 	
-	public  VentanaSeguir() {
+	
+	public  VentanaSeguir(Cliente cliente) {
 		super("Ventana de seguimiento");
 		JFrame ventana = new JFrame();
 		JPanel principal = new JPanel(new BorderLayout());

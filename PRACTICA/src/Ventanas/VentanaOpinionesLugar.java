@@ -15,9 +15,9 @@ import Vista.Cliente;
 
 public class VentanaOpinionesLugar extends JFrame {
 
-	private Cliente cliente;
 	
-	public VentanaOpinionesLugar() {
+	
+	public VentanaOpinionesLugar(Cliente cliente) {
 		super("Opiniones sobre un lugar");
 		
 		JFrame ventana = new JFrame();

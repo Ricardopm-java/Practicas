@@ -42,7 +42,7 @@ public class VentanaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				eleccion = "resena";
 				try {
-					cliente.enviar(new Gson().toJsonTree(eleccion).toString());
+					cliente.enviar(eleccion);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -61,7 +61,7 @@ public class VentanaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				eleccion = "lista";
 				try {
-					cliente.enviar(new Gson().toJsonTree(eleccion).toString());
+					cliente.enviar(eleccion);
 					cliente.listadoUsuarios();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -81,7 +81,7 @@ public class VentanaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				eleccion = "seguir";
 				try {
-					cliente.enviar(new Gson().toJsonTree(eleccion).toString());
+					cliente.enviar(eleccion);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -92,7 +92,7 @@ public class VentanaMenu extends JFrame {
 		});
 		
 		JButton opiniones = new JButton("Opiniones de un usuario");
-		principal.add(seguir);
+		principal.add(opiniones);
 		opiniones.setAlignmentX(CENTER_ALIGNMENT);
 		opiniones.addActionListener(new ActionListener() {
 			
@@ -100,7 +100,7 @@ public class VentanaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					eleccion = "opiniones";
-					cliente.enviar(new Gson().toJsonTree(eleccion).toString());
+					cliente.enviar(eleccion);
 					cliente.opinionesUsuario();
 					
 				} catch (IOException e1) {
@@ -112,7 +112,7 @@ public class VentanaMenu extends JFrame {
 		});
 		
 		JButton lugar = new JButton("Oponiones sobre un lugar");
-		principal.add(seguir);
+		principal.add(lugar);
 		lugar.setAlignmentX(CENTER_ALIGNMENT);
 		lugar.addActionListener(new ActionListener() {
 			
@@ -120,7 +120,7 @@ public class VentanaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				eleccion = "lugar";
 				try {
-					cliente.enviar(new Gson().toJsonTree(eleccion).toString());
+					cliente.enviar(eleccion);
 					cliente.opninionesLugar();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -131,7 +131,7 @@ public class VentanaMenu extends JFrame {
 		});
 		
 		JButton salir = new JButton("Salir");
-		principal.add(seguir);
+		principal.add(salir);
 		salir.setAlignmentX(CENTER_ALIGNMENT);
 		salir.addActionListener(new AbstractAction() {
 			
@@ -139,7 +139,7 @@ public class VentanaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				eleccion = "salir";
 				try {
-					cliente.enviar(new Gson().toJsonTree(eleccion).toString());
+					cliente.enviar(eleccion);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

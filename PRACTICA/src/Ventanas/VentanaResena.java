@@ -32,9 +32,9 @@ public class VentanaResena extends JFrame{
 	String opinionResena;
 	String notaResena;
 	JFrame ventana = new JFrame();
-	private Cliente cliente;
 	
-	public VentanaResena() {
+	
+	public VentanaResena(Cliente cliente) {
 		super("Escribir una reseña");
 		
 		JPanel principal = new JPanel(new BorderLayout());
@@ -113,7 +113,7 @@ public class VentanaResena extends JFrame{
 				nueva.add(resena);
 								
 				try {
-					cliente.enviar(new Gson().toJsonTree(nueva).toString());
+					cliente.enviar(new Gson().toJson(nueva).toString());
 					ventana.dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

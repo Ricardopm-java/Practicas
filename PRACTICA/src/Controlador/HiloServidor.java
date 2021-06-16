@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -26,6 +27,7 @@ public class HiloServidor extends Thread {
 	private BufferedReader entrada;
 	private BufferedWriter salida;
 	private Socket socketServ;
+	private Class Usuario;
 
 	public HiloServidor(Socket socketServ) throws IOException {
 
@@ -50,26 +52,7 @@ public class HiloServidor extends Thread {
 
 	}
 
-	/*
-	 * private void opcionElegida() {
-	 * 
-	 * String opcionRecibida; try { opcionRecibida = lectura();
-	 * System.out.println("la opcion elegida es " + opcionRecibida);
-	 * 
-	 * switch (opcionRecibida) { case "1": menuOpciones(Opciones.RESENA);
-	 * 
-	 * break; case "2": menuOpciones(Opciones.LISTARUSUARIOS); break; case "3":
-	 * menuOpciones(Opciones.SEGUIR); break; case "4":
-	 * menuOpciones(Opciones.OPINIONESUSUARIO); break; case "5":
-	 * menuOpciones(Opciones.OPINIONESLUGAR); break; case "0":
-	 * enviar("Fin del programa."); break; }
-	 * 
-	 * opcionRecibida = null;
-	 * 
-	 * } catch (IOException e) { e.printStackTrace(); }
-	 * 
-	 * }
-	 */
+	
 
 	private void loggin() throws IOException {
 
@@ -104,62 +87,23 @@ public class HiloServidor extends Thread {
 		String lecturaNueva = lectura();
 		if(lecturaNueva.equalsIgnoreCase("registro")) {
 			String nuevo = lectura();
-			JsonElement nuevojs = new JsonParser().parse(nuevo);
-			List<Usuario> listaNuevo = new ArrayList<Usuario>();
-			String nombre = null; String pass = null;
-			if (nuevojs.isJsonArray()) { 
-				for (JsonElement elemento : nuevojs.getAsJsonArray()) { 
-					if (elemento.isJsonObject()) { 
-						JsonObject valor = elemento.getAsJsonObject();
-						if (valor.has("nombre")) nombre = valor.get("nombre").getAsString();
-						if (valor.has("pass")) pass = valor.get("pass").getAsString();
-					}
-				}
-			}
+			Usuario nuevoRegistro = new Gson().fromJson(nuevo, Usuario.class);
+			String nombre = nuevoRegistro.getUsuario();
+			String pass = nuevoRegistro.getPass();
+			
 		 Usuario nuevoUsuario = new Usuario(nombre, pass);
 		 new UsuarioDAO().registrarUsuario(nuevoUsuario);
 		 enviar("registrado");
 		 menuOpciones();
 			
-		/*
-		 * String registro = lectura();
-		 * 
-		 * if (registro.equalsIgnoreCase("no")) {
-		 * enviar("Vuelve a introducir tus datos: "); loggin();
-		 * 
-		 * } else { String nuevo = lectura(); ;  
-		 * 
-		 * 
-		 * 
-		 * } } }
-		 */
-				
-				/*
-				 * if () {
-				 * // // registro con exito //loggin();
-				 * } else { // registro fallido loggin(); }
-				 */
-
+		
 			}
 		
 	}
 
 	private void menuOpciones() throws IOException {
 		String eleccion = entrada.readLine();
-		JsonElement eleccionJson = new JsonParser().parse(eleccion);
-
-		String elegido = null;
-
-		if (eleccionJson.isJsonArray()) {
-			for (JsonElement elemento : eleccionJson.getAsJsonArray()) {
-				if (elemento.isJsonObject()) {
-					JsonObject valor = elemento.getAsJsonObject();
-					if (valor.has("eleccion"))
-						eleccion = valor.get("eleccion").getAsString();
-				}
-			}
-		}
-
+		
 		switch (eleccion) {
 		case "resena":
 			escribirResena();
@@ -182,19 +126,7 @@ public class HiloServidor extends Thread {
 
 		}
 
-		/*
-		 * switch (criterio) { case RESENA: escribirResena(); break;
-		 * 
-		 * case SEGUIR: seguirUsuario(); break;
-		 * 
-		 * case LISTARUSUARIOS: listarUsuarios(); break;
-		 * 
-		 * case OPINIONESUSUARIO: opinionesUsuario(); break;
-		 * 
-		 * case OPINIONESLUGAR: opinionesLugar(); break; }
-		 * 
-		 * opcionElegida();
-		 */
+		
 	}
 
 	private void escribirResena() throws IOException {
@@ -206,38 +138,11 @@ public class HiloServidor extends Thread {
 		String opinion = null;
 		String nota = null;
 
-		JsonElement recibido = new JsonParser().parse(mensaje);
-		List<Resena> lista = new ArrayList<Resena>();
-		if (recibido.isJsonArray()) {
-			for (JsonElement elemento : recibido.getAsJsonArray()) {
-				if (elemento.isJsonObject()) {
-					JsonObject valor = elemento.getAsJsonObject();
-					if (valor.has("lugar"))
-						lugar = valor.get("lugar").getAsString();
-					if (valor.has("valoracion"))
-						valoracion = valor.get("valoracion").getAsString();
-					if (valor.has("opinion"))
-						opinion = valor.get("opinion").getAsString();
-					if (valor.has("nota"))
-						nota = valor.get("nota").getAsString();
-				}
-			}
-		}
-		/*
-		 * enviar("Vamos a escribir una reseña nueva:");
-		 * 
-		 * enviar("Que lugar has elegido: "); String lugar = lectura().toLowerCase();
-		 * 
-		 * enviar("Calificalo del 0 al 10: "); String valoracion = lectura();
-		 * 
-		 * enviar("Escribe una breve opinion de este lugar: ");
-		 * 
-		 * String opinion = lectura();
-		 * 
-		 * enviar("Escribe una breve anotacion personal sobre el lugar: ");
-		 * 
-		 * String nota = lectura();
-		 */
+		Resena resenaNuevaRec = new Gson().fromJson(mensaje, Resena.class);
+		lugar = resenaNuevaRec.getLugar();
+		valoracion = resenaNuevaRec.getCalificacion();
+		opinion = resenaNuevaRec.getOpinion();
+		nota = resenaNuevaRec.getNotas();
 
 		Resena resena = new Resena(lugar, valoracion, opinion, nota, usuarioNombre);
 		new ResenaDAO().nuevo(resena);
@@ -247,29 +152,21 @@ public class HiloServidor extends Thread {
 	private void seguirUsuario() throws IOException {
 		String mensaje = lectura().toLowerCase();
 		boolean seguir = new UsuarioDAO().seguir(usuarioNombre, mensaje);
-		ArrayList<Usuario> lista = new ArrayList<Usuario>();
 		Usuario seguido = new Usuario(mensaje, seguir);
 		if (seguir) {
 
-			lista.add(seguido);
-			enviar(new Gson().toJsonTree(lista).toString()); // envio el nombre del seguido y true
+			enviar(new Gson().toJson(seguido).toString()); // envio el nombre del seguido y true
 
 		} else {
-			lista.add(seguido);
-			enviar(new Gson().toJsonTree(lista).toString()); // envio el nombre del seguido y false
+			enviar(new Gson().toJson(seguido).toString()); // envio el nombre del seguido y false
 		}
 
 	}
 
 	private void listarUsuarios() throws IOException {
-		ArrayList<Usuario> resultado;
-		resultado = new UsuarioDAO().listar();
-		enviar(new Gson().toJsonTree(resultado).toString());
+		ArrayList<Usuario> resultado = new UsuarioDAO().listar();
+		enviar(resultado.toString());
 
-		/*
-		 * System.out.println(resultado); for (Usuario user : resultado) {
-		 * enviar(user.toString()); } enviar("Listado terminado");
-		 */
 
 	}
 
@@ -279,30 +176,10 @@ public class HiloServidor extends Thread {
 		Usuario usuario = new Usuario(consulta.toLowerCase());
 		if (new UsuarioDAO().tieneResena(usuario)) {
 			ArrayList<Resena> opiniones = new ResenaDAO().opinionesUsuario(usuario);
-			//enviar(new Gson().toJsonTree(opiniones).toString());
 			enviar(new Gson().toJson(opiniones).toString());
 		}
 
-		/*
-		 * enviar("Dime el nombre del usuario que quieres ver sus opiniones: ");
-		 * 
-		 * String nombre = lectura().toLowerCase(); // nombre del usuario a seguir
-		 * System.out.println("El usuario elegido es: " + nombre);
-		 * 
-		 * Usuario usuario = new Usuario(nombre); if (new
-		 * UsuarioDAO().tieneResena(usuario)) { // si tiene ese usuario reseñas escritas
-		 * ArrayList<Resena> opiniones = new ResenaDAO().opinionesUsuario(usuario); //
-		 * guardo el resultado en un // arraylist for (Resena op : opiniones) {//
-		 * recorro el arraylist enviar(op.imprimirOpinion()); // lo voy enviando segun
-		 * lo voy recorriendo con el // formato de imprimiropinion }
-		 * 
-		 * enviar("Listado terminado");
-		 * 
-		 * } else { enviar("El usuario " + usuario.getUsuario() + "no tiene reseñas.");
-		 * // si no existe ese // usuario
-		 * 
-		 * }
-		 */
+		
 	}
 
 	private void opinionesLugar() throws IOException {
@@ -310,22 +187,9 @@ public class HiloServidor extends Thread {
 		String consulta = lectura();
 		if (new ResenaDAO().comprobarLugar(consulta)) {
 			ArrayList<Resena> opiniones = new ResenaDAO().opinionesLugar(consulta);
-			enviar(new Gson().toJsonTree(opiniones).toString());
+			enviar(new Gson().toJson(opiniones).toString());
 		}
 
-		/*
-		 * enviar("Sobre que lugar quieres ver las opiniones: "); String lugarOpinion =
-		 * lectura(); System.out.println("El lugar elegido es " + lugarOpinion);
-		 * 
-		 * if (new ResenaDAO().comprobarLugar(lugarOpinion)) { ArrayList<Resena>
-		 * opiniones = new ResenaDAO().opinionesLugar(lugarOpinion); for (Resena op :
-		 * opiniones) { enviar(op.imprimirLugar()); }
-		 * 
-		 * enviar("Listado terminado");
-		 * 
-		 * } else {
-		 * enviar("Este lugar no esta en la base de datos o esta mal escrito."); }
-		 */
 
 	}
 

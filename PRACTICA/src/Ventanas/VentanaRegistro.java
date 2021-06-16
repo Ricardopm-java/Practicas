@@ -41,7 +41,7 @@ public class VentanaRegistro extends JFrame {
 		
 		this.add(principal);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventana.setVisible(true);
+		
 		pack();
 		
 		return usuarioNuevo;
@@ -81,7 +81,7 @@ public class VentanaRegistro extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					cliente.enviar(new Gson().toJsonTree(usuarioNuevo).toString());
+					cliente.enviar(new Gson().toJson(usuarioNuevo).toString());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
