@@ -25,7 +25,7 @@ public class VentanaInicial extends JFrame {
 	private Cliente cliente;
 	
 
-	public VentanaInicial(Cliente cliente) throws HeadlessException {
+	public VentanaInicial(Cliente cliente) {
 		super("Loggin");
 		this.cliente = cliente;
 		crearVentana();

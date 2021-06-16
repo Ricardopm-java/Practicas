@@ -84,8 +84,9 @@ public class Cliente {
 
 					menu();
 					seguir = false;
-				} else {
-					new VentanaInicialNOK().setVisible(true);
+				}
+				if (mensaje.equalsIgnoreCase("incorrecto")){
+					new VentanaInicialNOK(this).setVisible(true);
 					if (entrada.readLine().equalsIgnoreCase("registrado")) {
 						menu();
 					}
@@ -104,7 +105,7 @@ public class Cliente {
 	}
 
 	private void menu() {
-		new VentanaMenu().setVisible(true);
+		new VentanaMenu(this).setVisible(true);
 
 	}
 

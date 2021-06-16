@@ -16,7 +16,7 @@ import Vista.Cliente;
 public class VentanaSeguir extends JFrame {
 
 	private String nombreASeguir;
-	
+	private Cliente cliente;
 	
 	public  VentanaSeguir(Cliente cliente) {
 		super("Ventana de seguimiento");

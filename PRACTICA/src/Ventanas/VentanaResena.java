@@ -25,6 +25,7 @@ import Vista.Cliente;
 
 public class VentanaResena extends JFrame{
 
+	private Cliente cliente;
 	private Resena resena;
 	String nikResena;
 	String lugarResena;
@@ -40,7 +41,7 @@ public class VentanaResena extends JFrame{
 		JPanel principal = new JPanel(new BorderLayout());
 		
 		principal.add(panelSuperior(), BorderLayout.NORTH);
-		principal.add(panelInferior(), BorderLayout.SOUTH);
+		principal.add(panelInferior(cliente), BorderLayout.SOUTH);
 		
 		resena = new Resena(lugarResena, calificacionResena, opinionResena, notaResena, nikResena);
 		
@@ -78,7 +79,7 @@ public class VentanaResena extends JFrame{
 	
 	
 	
-	private JPanel panelInferior() {
+	private JPanel panelInferior(Cliente cliente) {
 		JPanel inferior = new JPanel(new BorderLayout());
 		
 		JLabel opinion = new JLabel("Opinion:");
@@ -109,11 +110,9 @@ public class VentanaResena extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				//enviar la reseña
 				
-				ArrayList<Resena> nueva = new ArrayList<Resena>();
-				nueva.add(resena);
-								
 				try {
-					cliente.enviar(new Gson().toJson(nueva).toString());
+					Cliente cl=cliente;
+					cl.enviar(new Gson().toJson(resena).toString());
 					ventana.dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

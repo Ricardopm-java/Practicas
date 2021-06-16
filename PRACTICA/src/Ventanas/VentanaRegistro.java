@@ -24,7 +24,7 @@ public class VentanaRegistro extends JFrame {
 	private String pass;
 	private Cliente cliente;
 
-	public Usuario VentanaRegistro() {
+	public VentanaRegistro(Cliente cliente) {
 		
 		JFrame ventana = new JFrame();
 		JPanel principal = new JPanel(new BorderLayout());
@@ -34,7 +34,7 @@ public class VentanaRegistro extends JFrame {
 		principal.add(titulo, BorderLayout.NORTH);
 
 		principal.add(panelCentral(), BorderLayout.CENTER);
-		principal.add(panelSur(), BorderLayout.SOUTH);
+		principal.add(panelSur(cliente), BorderLayout.SOUTH);
 		
 		usuarioNuevo = new Usuario(usuario, pass);
 		
@@ -44,7 +44,7 @@ public class VentanaRegistro extends JFrame {
 		
 		pack();
 		
-		return usuarioNuevo;
+		
 	}
 
 	private JPanel panelCentral() {
@@ -71,7 +71,7 @@ public class VentanaRegistro extends JFrame {
 		return central;
 	}
 	
-	private JPanel panelSur() {
+	private JPanel panelSur(Cliente cliente) {
 		JPanel sur = new JPanel(new BorderLayout());
 		JButton enviar = new JButton("Registrarse");
 		sur.add(enviar, BorderLayout.CENTER);

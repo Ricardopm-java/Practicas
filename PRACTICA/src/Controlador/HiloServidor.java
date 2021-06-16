@@ -52,8 +52,6 @@ public class HiloServidor extends Thread {
 
 	}
 
-	
-
 	private void loggin() throws IOException {
 
 		String lectura = lectura().toLowerCase();
@@ -63,47 +61,51 @@ public class HiloServidor extends Thread {
 		String[] arraylectura = lectura.split("#");
 		Usuario usuario = new Usuario(arraylectura[0], arraylectura[1]);
 		System.out.println(usuario);
-		
 
 		boolean confirmado = new UsuarioDAO().comprobarUsuario(usuario);
 
 		System.out.println(confirmado);
 
-		String login;
-		//ArrayList<String> lista = new ArrayList<String>();
+		String login = null;
+
 		if (confirmado) {
 			login = "correcto";
 			usuarioNombre = arraylectura[0];
-			//lista.add(login);
+			// lista.add(login);
 			enviar(login);
 			System.out.println(login);
+
 			menuOpciones();
+
 		}
-		if(confirmado = false) {
+		if (!confirmado) {
 			login = "incorrecto";
 			enviar(login);
-		}
-		
-		String lecturaNueva = lectura();
-		if(lecturaNueva.equalsIgnoreCase("registro")) {
-			String nuevo = lectura();
-			Usuario nuevoRegistro = new Gson().fromJson(nuevo, Usuario.class);
-			String nombre = nuevoRegistro.getUsuario();
-			String pass = nuevoRegistro.getPass();
-			
-		 Usuario nuevoUsuario = new Usuario(nombre, pass);
-		 new UsuarioDAO().registrarUsuario(nuevoUsuario);
-		 enviar("registrado");
-		 menuOpciones();
-			
-		
+			while (login.equalsIgnoreCase("incorrecto")) {
+				String lecturaNueva = lectura();
+
+				if (lecturaNueva.equalsIgnoreCase("registro")) {
+					String nuevo = lectura();
+					Usuario nuevoRegistro = new Gson().fromJson(nuevo, Usuario.class);
+					String nombre = nuevoRegistro.getUsuario();
+					String pass = nuevoRegistro.getPass();
+
+					Usuario nuevoUsuario = new Usuario(nombre, pass);
+					new UsuarioDAO().registrarUsuario(nuevoUsuario);
+					enviar("registrado");
+					login = null;
+				}
 			}
-		
+
+			menuOpciones();
+
+		}
+
 	}
 
 	private void menuOpciones() throws IOException {
 		String eleccion = entrada.readLine();
-		
+
 		switch (eleccion) {
 		case "resena":
 			escribirResena();
@@ -126,7 +128,6 @@ public class HiloServidor extends Thread {
 
 		}
 
-		
 	}
 
 	private void escribirResena() throws IOException {
@@ -167,7 +168,6 @@ public class HiloServidor extends Thread {
 		ArrayList<Usuario> resultado = new UsuarioDAO().listar();
 		enviar(resultado.toString());
 
-
 	}
 
 	private void opinionesUsuario() throws IOException {
@@ -179,7 +179,6 @@ public class HiloServidor extends Thread {
 			enviar(new Gson().toJson(opiniones).toString());
 		}
 
-		
 	}
 
 	private void opinionesLugar() throws IOException {
@@ -189,7 +188,6 @@ public class HiloServidor extends Thread {
 			ArrayList<Resena> opiniones = new ResenaDAO().opinionesLugar(consulta);
 			enviar(new Gson().toJson(opiniones).toString());
 		}
-
 
 	}
 

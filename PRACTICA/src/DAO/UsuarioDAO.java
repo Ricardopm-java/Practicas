@@ -241,7 +241,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 	private boolean comprobarseguido(String seguido) throws SQLException {
 		boolean comprobado;
 		String SQL_SELECT = "SELECT * FROM SEGUIDOS WHERE USUARIO = '"+seguido+"'";
-		Connection conn = BBDD.get();
+		Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
 
 		PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 		ResultSet resultSet = preparedStatement.executeQuery(); // ejecutamos la sentencia

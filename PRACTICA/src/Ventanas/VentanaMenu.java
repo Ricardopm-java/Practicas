@@ -24,8 +24,9 @@ public class VentanaMenu extends JFrame {
 	private Cliente cliente;
 
 
-	public VentanaMenu() {
+	public VentanaMenu(Cliente cliente) {
 		super("Menú de opciones");
+		
 		JFrame ventana =  new JFrame();
 		JPanel principal = new JPanel();
 		principal.setLayout(new BoxLayout(principal, BoxLayout.Y_AXIS));
@@ -43,11 +44,12 @@ public class VentanaMenu extends JFrame {
 				eleccion = "resena";
 				try {
 					cliente.enviar(eleccion);
+					new VentanaResena(cliente).setVisible(true);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				new VentanaResena().setVisible(true);
+				
 				
 			}
 		});
@@ -82,11 +84,12 @@ public class VentanaMenu extends JFrame {
 				eleccion = "seguir";
 				try {
 					cliente.enviar(eleccion);
+					new VentanaSeguir(cliente).setVisible(true);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				new VentanaSeguir();
+				
 				
 			}
 		});
@@ -128,6 +131,7 @@ public class VentanaMenu extends JFrame {
 				}
 				
 			}
+			
 		});
 		
 		JButton salir = new JButton("Salir");

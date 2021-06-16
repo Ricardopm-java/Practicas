@@ -15,13 +15,14 @@ import Vista.Cliente;
 
 public class VentanaOpinionesLugar extends JFrame {
 
-	
+	private Cliente cliente;
 	
 	public VentanaOpinionesLugar(Cliente cliente) {
 		super("Opiniones sobre un lugar");
 		
 		JFrame ventana = new JFrame();
-		JPanel principal = new JPanel(new BorderLayout());
+		JPanel principal = new JPanel();
+		ventana.add(principal);
 		JLabel encabezado = new JLabel("De que lugar quieres conocer sus opiniones.");
 		principal.add(encabezado, BorderLayout.NORTH);
 		

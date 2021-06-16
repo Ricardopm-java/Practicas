@@ -20,7 +20,8 @@ public class VentanaOpinionesUsuario extends JFrame{
 	public VentanaOpinionesUsuario(Cliente cliente) {
 		super("Opiniones de los usuarios");
 		JFrame ventana = new JFrame();
-		JPanel principal = new JPanel(new BorderLayout());
+		JPanel principal = new JPanel();
+		ventana.add(principal);
 		JLabel encabezado = new JLabel("De quién quieres conocer sus opiniones.");
 		principal.add(encabezado, BorderLayout.NORTH);
 		
