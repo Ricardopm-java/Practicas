@@ -9,7 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Vista.Cliente;
+
 public class VentanaUsuarioNOK extends JFrame {
+	
+	private Cliente cliente;
 	
 	public VentanaUsuarioNOK() {
 		super("Login incorrecto");
@@ -51,7 +55,7 @@ public class VentanaUsuarioNOK extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new VentanaInicial();
+				new VentanaInicial(cliente);
 				
 				
 			}

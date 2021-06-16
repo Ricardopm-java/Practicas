@@ -16,6 +16,7 @@ import Vista.Cliente;
 public class VentanaSeguir extends JFrame {
 
 	private String nombreASeguir;
+	private Cliente cliente;
 	
 	public  VentanaSeguir() {
 		super("Ventana de seguimiento");
@@ -40,7 +41,7 @@ public class VentanaSeguir extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new Cliente().enviar(nombreASeguir);
+					cliente.enviar(nombreASeguir);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -85,21 +86,21 @@ public class Cliente {
 
 			
 				try {
-					new VentanaInicial().setVisible(true);
+					new VentanaInicial(this).setVisible(true);
 					
 					String mensaje = lectura(); //login : correcto
 					// Usuario y contraseña correctos || usuario no existente quieres
 					// registrarte
 					System.out.println(mensaje);
-					/*
-					 * String confirmacion = null;
-					 * 
-					 * JsonElement jsonlogueado = new JsonParser().parse(mensaje); if
-					 * (jsonlogueado.isJsonArray()) { for (JsonElement elemento :
-					 * jsonlogueado.getAsJsonArray()) { if (elemento.isJsonObject()) { JsonObject
-					 * valor = elemento.getAsJsonObject(); if (valor.has("login")) confirmacion =
-					 * valor.get("login").getAsString(); } } }
-					 */
+					
+					  String confirmacion = null;
+					  
+					  JsonElement jsonlogueado = new JsonParser().parse(mensaje); if
+					  (jsonlogueado.isJsonArray()) { for (JsonElement elemento :
+					  jsonlogueado.getAsJsonArray()) { if (elemento.isJsonObject()) { JsonObject
+					  valor = elemento.getAsJsonObject(); if (valor.has("login")) confirmacion =
+					  valor.get("login").getAsString(); } } }
+					 
 					if (mensaje.equalsIgnoreCase("correcto")) {
 						
 						menu();
@@ -205,21 +206,28 @@ public class Cliente {
 	public void listadoUsuarios() throws IOException {
 
 		String mensaje = entrada.readLine();
-		List<Usuario> listado = new ArrayList<Usuario>();
-		JsonElement doc = new JsonParser().parse(mensaje);
-		if (doc.isJsonArray()) {
-			for (JsonElement elemento : doc.getAsJsonArray()) {
-				if (elemento.isJsonObject()) {
-					JsonObject valor = elemento.getAsJsonObject();
-					String nombre = "";
-					if (valor.has("usuario"))
-						nombre = valor.get("usuario").getAsString();
-					Usuario usuario = new Usuario(nombre);
-					listado.add(usuario);
-				}
-			}
-
-		}
+		/*
+		 * [
+		 * {"usuario": "luis","¨pass": ",..", "seguidos": ["¨sadasd", "¨sad", "äsdsd"] },
+		 * {},
+		 * {}
+		 * ] 
+		 */
+		
+		
+		/*
+		 * List<Usuario> listado = new ArrayList<Usuario>(); JsonElement doc = new
+		 * JsonParser().parse(mensaje); if (doc.isJsonArray()) { for (JsonElement
+		 * elemento : doc.getAsJsonArray()) { if (elemento.isJsonObject()) { JsonObject
+		 * valor = elemento.getAsJsonObject(); String nombre = ""; if
+		 * (valor.has("usuario")) nombre = valor.get("usuario").getAsString(); Usuario
+		 * usuario = new Usuario(nombre); listado.add(usuario); } }
+		 * 
+		 * }
+		 */
+		
+		Usuario[] usuarios = new Gson().fromJson(mensaje, Usuario[].class);
+		List<Usuario> listado = Arrays.asList(usuarios);
 
 		new Ventanas.VentanaMostrar(listado.toString());
 
@@ -369,9 +377,19 @@ public class Cliente {
 		menu();
 
 	}
+	
+	/*
+	 * Si quiero enviar un dato en JSON:
+	 * String json = new Gson().toJson(objetoQueQuieroTransformar);
+	 * enviar(json);
+	 * 
+	 * Si quiero recibir un dato en JSON:
+	 * String mensaje = recibir();
+	 * Tipo miObjeto = new Gson().fromJson(mensaje, Tipo.class);
+	 */
 
 	public static void main(String[] args) {
-		new Cliente().menuInicial();
+		new Cliente().menuInicial(); //Este es el unico new Cliente() que puede haber en todo el proyecto
 
 	}
 

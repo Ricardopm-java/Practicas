@@ -32,6 +32,7 @@ public class VentanaResena extends JFrame{
 	String opinionResena;
 	String notaResena;
 	JFrame ventana = new JFrame();
+	private Cliente cliente;
 	
 	public VentanaResena() {
 		super("Escribir una reseña");
@@ -112,7 +113,7 @@ public class VentanaResena extends JFrame{
 				nueva.add(resena);
 								
 				try {
-					new Cliente().enviar(new Gson().toJsonTree(nueva).toString());
+					cliente.enviar(new Gson().toJsonTree(nueva).toString());
 					ventana.dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

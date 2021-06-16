@@ -22,6 +22,7 @@ public class VentanaRegistro extends JFrame {
 	private Usuario usuarioNuevo;
 	private String usuario;
 	private String pass;
+	private Cliente cliente;
 
 	public Usuario VentanaRegistro() {
 		
@@ -80,7 +81,7 @@ public class VentanaRegistro extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new Cliente().enviar(new Gson().toJsonTree(usuarioNuevo).toString());
+					cliente.enviar(new Gson().toJsonTree(usuarioNuevo).toString());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -92,8 +93,6 @@ public class VentanaRegistro extends JFrame {
 		return sur;
 	}
 
-	public static void main(String[] args) {
-		new VentanaRegistro().setVisible(true);
-	}
+	
 
 }

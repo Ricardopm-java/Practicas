@@ -15,6 +15,8 @@ import Vista.Cliente;
 
 public class VentanaOpinionesLugar extends JFrame {
 
+	private Cliente cliente;
+	
 	public VentanaOpinionesLugar() {
 		super("Opiniones sobre un lugar");
 		
@@ -39,7 +41,7 @@ public class VentanaOpinionesLugar extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new Cliente().enviar(textoLugar.getText());
+					cliente.enviar(textoLugar.getText());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

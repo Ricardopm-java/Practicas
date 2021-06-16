@@ -22,10 +22,12 @@ public class VentanaInicial extends JFrame {
 	JButton login;
 	String usuario;
 	String contrasena;
+	private Cliente cliente;
 	
 
-	public VentanaInicial() throws HeadlessException {
+	public VentanaInicial(Cliente cliente) throws HeadlessException {
 		super("Loggin");
+		this.cliente = cliente;
 		crearVentana();
 		
 	}
@@ -51,7 +53,7 @@ public class VentanaInicial extends JFrame {
 
 				String total = usuario + "#" + contrasena;
 				try {
-					new Cliente().enviar(total);
+					cliente.enviar(total);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

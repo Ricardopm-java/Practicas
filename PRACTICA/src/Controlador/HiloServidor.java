@@ -279,7 +279,8 @@ public class HiloServidor extends Thread {
 		Usuario usuario = new Usuario(consulta.toLowerCase());
 		if (new UsuarioDAO().tieneResena(usuario)) {
 			ArrayList<Resena> opiniones = new ResenaDAO().opinionesUsuario(usuario);
-			enviar(new Gson().toJsonTree(opiniones).toString());
+			//enviar(new Gson().toJsonTree(opiniones).toString());
+			enviar(new Gson().toJson(opiniones).toString());
 		}
 
 		/*
