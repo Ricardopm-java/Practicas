@@ -7,8 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.google.gson.JsonElement;
-
 public class VentanaMostrar extends JFrame{
 
 	public VentanaMostrar(String resultadoRecibido) {
@@ -24,7 +22,6 @@ public class VentanaMostrar extends JFrame{
 		
 		resultado.setText(resultadoRecibido);
 		
-		ventana.setVisible(true);
 		this.add(principal);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();

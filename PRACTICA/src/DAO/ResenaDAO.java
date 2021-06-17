@@ -1,31 +1,18 @@
 package DAO;
 
 import java.sql.CallableStatement;
-import java.sql.Connection; 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-
-import Modelo.BBDD;
 import Modelo.Resena;
 import Modelo.Usuario;
-import oracle.jdbc.OracleCallableStatement;
 
 public class ResenaDAO implements DAO {
-	
-	
-	private String lugar;
-	private String calificacion;
-	private String opinion;
-	private String notas;
-	private String usuario;
-
-	
 	
 	public ResenaDAO() {
 		super();
@@ -33,13 +20,13 @@ public class ResenaDAO implements DAO {
 
 	public boolean nuevo (Resena resena) {
 
-		boolean resenaGuardada;
+		boolean resenaGuardada = false;
 		//String SQL_SELECT = "INSERT INTO RESENAS (USUARIO, LUGAR, CALIFICACION, OPINION, NOTA) VALUES (?,?,?,?,?) ";
 		
 		try {
-			Connection conn = BBDD.get();
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
 			//PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
-			OracleCallableStatement st = (OracleCallableStatement) conn.prepareCall("{CALL REGISTRO.REGISTRAR_RESENAS (?,?,?,?,?)}");
+			CallableStatement st = conn.prepareCall("{CALL REGISTRO.REGISTRAR_RESENAS (?,?,?,?,?)}");
 			
 			st.setString(1, resena.getUsuario());
 			st.setString(2, resena.getLugar());
@@ -49,7 +36,7 @@ public class ResenaDAO implements DAO {
 			
 			boolean result = st.execute(); // ejecutamos la sentencia
 			
-			resenaGuardada = result;
+			if(result) resenaGuardada = true;
 			
 			
 		} catch (SQLException e) {
@@ -74,7 +61,7 @@ public class ResenaDAO implements DAO {
 		ArrayList<Resena> resultado = new ArrayList<Resena>();
 		
 		try {
-			Connection conn = BBDD.get();
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
 			CallableStatement st = conn.prepareCall( "{CALL REGISTRO.F_RESENASPORLUGAR (?,?,?,?,?) }");
 			st.registerOutParameter(1, Types.VARCHAR);
 			st.registerOutParameter(2, Types.VARCHAR);
@@ -103,7 +90,7 @@ public class ResenaDAO implements DAO {
 
 		String SQL_SELECT = "SELECT LUGAR, CALIFICACION, OPINION FROM RESENAS WHERE USUARIO = '"+nombre+"'  ";
 		try {
-			Connection conn = BBDD.get();
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
 
 			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -130,7 +117,7 @@ public class ResenaDAO implements DAO {
 		boolean existe = false;
 		String SQL_SELECT = "SELECT LUGAR FROM RESENAS WHERE LUGAR = '"+lugarBuscado+"'";
 		try {
-			Connection conn = BBDD.get();
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
 			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			

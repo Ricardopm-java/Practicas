@@ -7,17 +7,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import DAO.ResenaDAO;
 import DAO.UsuarioDAO;
-import Modelo.Opciones;
 import Modelo.Resena;
 import Modelo.Usuario;
 
@@ -27,7 +21,6 @@ public class HiloServidor extends Thread {
 	private BufferedReader entrada;
 	private BufferedWriter salida;
 	private Socket socketServ;
-	private Class Usuario;
 
 	public HiloServidor(Socket socketServ) throws IOException {
 
@@ -89,7 +82,7 @@ public class HiloServidor extends Thread {
 					Usuario nuevoRegistro = new Gson().fromJson(nuevo, Usuario.class);
 					String nombre = nuevoRegistro.getUsuario();
 					String pass = nuevoRegistro.getPass();
-
+					usuarioNombre = nombre;
 					Usuario nuevoUsuario = new Usuario(nombre, pass);
 					new UsuarioDAO().registrarUsuario(nuevoUsuario);
 					enviar("registrado");
@@ -140,6 +133,7 @@ public class HiloServidor extends Thread {
 		String nota = null;
 
 		Resena resenaNuevaRec = new Gson().fromJson(mensaje, Resena.class);
+		System.out.println(resenaNuevaRec.toString());
 		lugar = resenaNuevaRec.getLugar();
 		valoracion = resenaNuevaRec.getCalificacion();
 		opinion = resenaNuevaRec.getOpinion();

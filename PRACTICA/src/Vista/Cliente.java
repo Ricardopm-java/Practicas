@@ -6,22 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import DAO.ResenaDAO;
-import DAO.UsuarioDAO;
-import Modelo.Opciones;
 import Modelo.Resena;
 import Modelo.Usuario;
 import Ventanas.VentanaInicial;
@@ -30,7 +18,6 @@ import Ventanas.VentanaMenu;
 import Ventanas.VentanaMostrar;
 import Ventanas.VentanaOpinionesLugar;
 import Ventanas.VentanaOpinionesUsuario;
-import Ventanas.VentanaRegistro;
 import Ventanas.VentanaResena;
 import Ventanas.VentanaSeguir;
 
@@ -66,7 +53,7 @@ public class Cliente {
 	}
 
 	private void menuInicial() {
-		boolean primeraEtapa;
+
 		boolean seguir = true;
 		while (seguir) {
 
@@ -78,14 +65,12 @@ public class Cliente {
 				// registrarte
 				System.out.println(mensaje);
 
-				String confirmacion = null;
-
 				if (mensaje.equalsIgnoreCase("correcto")) {
 
 					menu();
 					seguir = false;
 				}
-				if (mensaje.equalsIgnoreCase("incorrecto")){
+				if (mensaje.equalsIgnoreCase("incorrecto")) {
 					new VentanaInicialNOK(this).setVisible(true);
 					if (entrada.readLine().equalsIgnoreCase("registrado")) {
 						menu();
@@ -121,7 +106,7 @@ public class Cliente {
 
 		String[] arraylectura = mensaje.split(" ");
 
-		new VentanaMostrar(arraylectura.toString());
+		new VentanaMostrar(arraylectura.toString()).setVisible(true);
 
 		menu();
 

@@ -17,7 +17,7 @@ public class BBDD {
 		Connection conn;
 		try {
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
-			Statement statement = conn.createStatement();
+			//Statement statement = conn.createStatement();
 		} catch (SQLException e) {
 
 		}

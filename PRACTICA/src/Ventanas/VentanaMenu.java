@@ -1,6 +1,5 @@
 package Ventanas;
 
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -11,15 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
+import Modelo.Usuario;
 import Vista.Cliente;
 
 public class VentanaMenu extends JFrame {
 
-	private String nik;
+	private Usuario usuario;
 	private String eleccion;
 	private Cliente cliente;
 
@@ -43,6 +39,7 @@ public class VentanaMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				eleccion = "resena";
 				try {
+					
 					cliente.enviar(eleccion);
 					new VentanaResena(cliente).setVisible(true);
 				} catch (IOException e1) {
