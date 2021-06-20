@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
+import Modelo.BBDD;
 import Modelo.Resena;
 import Modelo.Usuario;
 
@@ -24,19 +25,19 @@ public class ResenaDAO implements DAO {
 		//String SQL_SELECT = "INSERT INTO RESENAS (USUARIO, LUGAR, CALIFICACION, OPINION, NOTA) VALUES (?,?,?,?,?) ";
 		
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
+			Connection conn = BBDD.get();
 			//PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
-			CallableStatement st = conn.prepareCall("{CALL REGISTRO.REGISTRAR_RESENAS (?,?,?,?,?)}");
-			
+			CallableStatement st = conn.prepareCall("{EXECUTE P_REGISTRAR_RESENAS (?,?,?,?,?)}");
+			System.out.println(resena.toString());
 			st.setString(1, resena.getUsuario());
 			st.setString(2, resena.getLugar());
-			st.setString(3, resena.getCalificacion());
-			st.setString(4, resena.getOpinion());
-			st.setString(5, resena.getNotas());
+			st.setString(3, resena.getOpinion());
+			st.setString(4, resena.getNotas());
+			st.setString(5, resena.getCalificacion());
 			
-			boolean result = st.execute(); // ejecutamos la sentencia
+			int filaInsertada = st.executeUpdate(); // ejecutamos la sentencia
 			
-			if(result) resenaGuardada = true;
+			if(filaInsertada == 1) resenaGuardada = true;
 			
 			
 		} catch (SQLException e) {
@@ -61,14 +62,14 @@ public class ResenaDAO implements DAO {
 		ArrayList<Resena> resultado = new ArrayList<Resena>();
 		
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
-			CallableStatement st = conn.prepareCall( "{CALL REGISTRO.F_RESENASPORLUGAR (?,?,?,?,?) }");
+			Connection conn = BBDD.get();
+			CallableStatement st = conn.prepareCall( "{CALL F_RESENASPORLUGAR (?,?,?,?,?) }");
 			st.registerOutParameter(1, Types.VARCHAR);
 			st.registerOutParameter(2, Types.VARCHAR);
 			st.registerOutParameter(3, Types.VARCHAR);
 			st.registerOutParameter(4, Types.VARCHAR);
-			
 			st.setString(5, lugar);
+			
 			ResultSet rs = st.executeQuery();
 			
 			while(rs.next()) {
@@ -90,7 +91,7 @@ public class ResenaDAO implements DAO {
 
 		String SQL_SELECT = "SELECT LUGAR, CALIFICACION, OPINION FROM RESENAS WHERE USUARIO = '"+nombre+"'  ";
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
+			Connection conn = BBDD.get();
 
 			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -117,7 +118,7 @@ public class ResenaDAO implements DAO {
 		boolean existe = false;
 		String SQL_SELECT = "SELECT LUGAR FROM RESENAS WHERE LUGAR = '"+lugarBuscado+"'";
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");;
+			Connection conn = BBDD.get();
 			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			

@@ -42,6 +42,7 @@ public class VentanaOpinionesUsuario extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					cliente.enviar(textoUsuario.getText());
+					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -51,8 +52,7 @@ public class VentanaOpinionesUsuario extends JFrame{
 		});
 		
 		this.add(principal);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventana.setVisible(true);
+		
 		pack();
 		
 	}

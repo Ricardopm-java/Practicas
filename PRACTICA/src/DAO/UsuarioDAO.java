@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
+import Modelo.BBDD;
 import Modelo.Usuario;
 
 public class UsuarioDAO implements DAO<Usuario> {
@@ -53,7 +54,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 		String SQL_SELECT = "SELECT * FROM USUARIOS WHERE USUARIO=? AND PASS=? ";
 
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
+			Connection conn = BBDD.get();
 
 			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 			preparedStatement.setString(1, usuario.getUsuario());
@@ -89,7 +90,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 		String SQL_SELECT = "SELECT USUARIO FROM RESENAS WHERE USUARIO='" + usuario.getUsuario() + "'";
 
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
+			Connection conn = BBDD.get();
 			;
 			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -113,7 +114,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 		String SQL_SELECT = "SELECT USUARIO FROM USUARIOS WHERE USUARIO=?";
 
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
+			Connection conn = BBDD.get();
 			;
 			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 			preparedStatement.setString(1, usuario.getUsuario());
@@ -145,24 +146,24 @@ public class UsuarioDAO implements DAO<Usuario> {
 
 	public boolean registrarUsuario(Usuario usuario) {
 
-		boolean registrado;
+		boolean registrado = false;
 		// String SQL_SELECT = "INSERT INTO USUARIOS (USUARIO, PASS) VALUES
 		// ('"+usuario.getUsuario()+"', '"+usuario.getPass()+"')";
 
 		try {
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
-			;
+			Connection conn = BBDD.get();
 //			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 //			preparedStatement.executeUpdate();
 
-			CallableStatement st = conn.prepareCall("{CALL REGISTRAR_USUARIO (?,?) }");
+			CallableStatement st = conn.prepareCall("{EXECUTE P_REGISTRAR_USUARIO (?,?) }");
 
 			st.setString(1, usuario.getUsuario());
 			st.setString(2, usuario.getPass());
-			st.execute();
-			registrado = true;
+			int resultado = st.executeUpdate();
+			if (resultado == 1)	registrado = true;
 		} catch (SQLException e) {
 			System.out.println("No se ha podido registrar al usuario");
+			e.printStackTrace();
 			registrado = false;
 		}
 
@@ -172,22 +173,22 @@ public class UsuarioDAO implements DAO<Usuario> {
 	@Override
 	public ArrayList<Usuario> listar() {
 		ArrayList<Usuario> resultado = new ArrayList<Usuario>();
-		String SQL_SELECT = "{CALL REGISTRO.F_USUARIOSREGISTRADOS (?,?) }";
+		String SQL_SELECT = "{CALL F_USUARIOSREGISTRADOS (?) }";
 		try {
 
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
+			Connection conn = BBDD.get();
 			;
 			// PreparedStatement st = conn.prepareStatement(SQL_SELECT);
 			CallableStatement st = conn.prepareCall(SQL_SELECT); // uno para el registro de actividad (entrada) y otro
 																	// para mostrar ne la lista (salida)
 
-			st.registerOutParameter(1, Types.VARCHAR);
-			st.setString(2, nombre);
+			
+			st.setString(1, nombre);
 			// st.execute();
 			ResultSet resultSet = st.executeQuery(SQL_SELECT);
 			// String resul = st.getString(1);
-			while (resultSet.next()) {
-				resultado.add(recomponerUsuario(resultSet.getString(1)));
+			while (resultSet!=null) {
+				resultado.add(recomponerUsuario(resultSet.getString("USUARIO")));
 			}
 		} catch (SQLException e) {
 			System.out.println("No se ha podido mostrar la lista de usuarios registrados");
@@ -209,14 +210,12 @@ public class UsuarioDAO implements DAO<Usuario> {
 			if (comprobarseguido(seguido)) {
 
 				try {
-					Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM",
-							"cice");
-					;
+					Connection conn = BBDD.get();
 
-					CallableStatement st = conn.prepareCall("{CALL REGISTRO.P_SEGUIR (?,?)}");
+					CallableStatement st = conn.prepareCall("{EXECUTE P_SEGUIR (?,?)}");
 					st.setString(1, usuario);
 					st.setString(2, seguido);
-					st.execute();
+					st.executeUpdate();
 					seguidoOK = true;
 
 				} catch (SQLException e) {
@@ -238,7 +237,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 	private boolean comprobarseguido(String seguido) throws SQLException {
 		boolean comprobado;
 		String SQL_SELECT = "SELECT * FROM SEGUIDOS WHERE USUARIO = '" + seguido + "'";
-		Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SYSTEM", "cice");
+		Connection conn = BBDD.get();
 
 		PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 		ResultSet resultSet = preparedStatement.executeQuery(); // ejecutamos la sentencia
@@ -250,9 +249,6 @@ public class UsuarioDAO implements DAO<Usuario> {
 		return comprobado;
 	}
 
-	private void registrarMovimiento(Usuario usuario) {
-
-	}
 
 	@Override
 	public boolean seguir(String seguido) {

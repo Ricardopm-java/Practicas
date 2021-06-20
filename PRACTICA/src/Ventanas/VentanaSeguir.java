@@ -42,6 +42,7 @@ public class VentanaSeguir extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					cliente.enviar(nombreASeguir);
+					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -52,8 +53,7 @@ public class VentanaSeguir extends JFrame {
 		
 		
 		this.add(principal);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventana.setVisible(true);
+		
 		pack();
 		
 		

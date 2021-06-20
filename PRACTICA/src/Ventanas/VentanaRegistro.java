@@ -18,14 +18,16 @@ import Modelo.Usuario;
 import Vista.Cliente;
 
 public class VentanaRegistro extends JFrame {
-	
+
 	private Usuario usuarioNuevo;
 	private String usuario;
 	private String pass;
 	private Cliente cliente;
+	JTextField textoNombre;
+	JTextField textoContrasena;
 
 	public VentanaRegistro(Cliente cliente) {
-		
+
 		JFrame ventana = new JFrame();
 		JPanel principal = new JPanel(new BorderLayout());
 		ventana.add(principal);
@@ -35,16 +37,13 @@ public class VentanaRegistro extends JFrame {
 
 		principal.add(panelCentral(), BorderLayout.CENTER);
 		principal.add(panelSur(cliente), BorderLayout.SOUTH);
+
 		
-		usuarioNuevo = new Usuario(usuario, pass);
-		
-		
+
 		this.add(principal);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		pack();
-		
-		
+
 	}
 
 	private JPanel panelCentral() {
@@ -52,47 +51,49 @@ public class VentanaRegistro extends JFrame {
 		JPanel central = new JPanel();
 		JPanel centralSuperior = new JPanel(new BorderLayout());
 		JLabel nombre = new JLabel("Escribe un nik:");
-		JTextField textoNombre = new JTextField();
+		textoNombre = new JTextField();
 		centralSuperior.add(nombre, BorderLayout.NORTH);
 		centralSuperior.add(textoNombre, BorderLayout.SOUTH);
 
 		JPanel centralInferior = new JPanel(new BorderLayout());
 		JLabel contrasena = new JLabel("Escribe una contraseña:");
-		JTextField textoContrasena = new JTextField();
+		textoContrasena = new JTextField();
 		centralInferior.add(contrasena, BorderLayout.NORTH);
 		centralInferior.add(textoContrasena, BorderLayout.SOUTH);
+
 		
-		usuario = textoNombre.getText();
-		pass = textoContrasena.getText();
 
 		central.add(centralSuperior);
 		central.add(centralInferior);
 
 		return central;
 	}
-	
+
 	private JPanel panelSur(Cliente cliente) {
 		JPanel sur = new JPanel(new BorderLayout());
 		JButton enviar = new JButton("Registrarse");
 		sur.add(enviar, BorderLayout.CENTER);
-		
+
 		enviar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					usuario = textoNombre.getText();
+					pass = textoContrasena.getText();
+					usuarioNuevo = new Usuario(usuario, pass);
+					System.out.println(usuarioNuevo.toString());
 					cliente.enviar(new Gson().toJson(usuarioNuevo).toString());
+					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
-		
+
 		return sur;
 	}
-
-	
 
 }

@@ -66,19 +66,21 @@ public class Cliente {
 				System.out.println(mensaje);
 
 				if (mensaje.equalsIgnoreCase("correcto")) {
-
 					menu();
 					seguir = false;
 				}
 				if (mensaje.equalsIgnoreCase("incorrecto")) {
 					new VentanaInicialNOK(this).setVisible(true);
+					
 					if (entrada.readLine().equalsIgnoreCase("registrado")) {
 						menu();
+						seguir=false;
 					}
-					// String respuesta = new Scanner(System.in).nextLine();
-					// enviar(respuesta); // le mando "si o no"
-
-//						
+					if(entrada.readLine().equalsIgnoreCase("Registro fallido")) {
+						new VentanaMostrar("No se ha podido completar el registro");
+						menuInicial();
+					}
+					
 				}
 
 			} catch (IOException e) {

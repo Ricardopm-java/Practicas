@@ -18,7 +18,6 @@ public class Resena {
 	}
 	
 	
-
 	public Resena(String usuario,String lugar, String calificacion, String opinion) {
 		super();
 		this.usuario = usuario;

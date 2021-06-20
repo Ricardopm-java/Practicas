@@ -14,18 +14,18 @@ import javax.swing.JTextField;
 import com.google.gson.Gson;
 
 import Modelo.Resena;
+import Modelo.ResenaEscribir;
 import Vista.Cliente;
 
 public class VentanaResena extends JFrame {
 
 	
-	private Resena resena;
+	private ResenaEscribir resena;
 	String usuario;
 	String lugarResena;
 	String calificacionResena;
 	String opinionResena;
 	String notaResena;
-	JFrame ventana = new JFrame();
 	JTextField textoLugar;
 	JTextField textoCalificacion;
 	JTextField textoOpinion;
@@ -40,16 +40,16 @@ public class VentanaResena extends JFrame {
 		principal.add(panelInferior(cliente), BorderLayout.SOUTH);
 
 		this.add(principal);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		pack();
 	}
 
-	private Resena captarTexto() {
+	private ResenaEscribir captarTexto() {
 		lugarResena = textoLugar.getText();
 		calificacionResena = textoCalificacion.getText();
 		opinionResena = textoOpinion.getText();
 		notaResena = textoNota.getText();
-		resena = new Resena(lugarResena, calificacionResena, opinionResena, notaResena);
+		resena = new ResenaEscribir(lugarResena, calificacionResena, opinionResena, notaResena);
 		return resena;
 
 	}
@@ -104,9 +104,9 @@ public class VentanaResena extends JFrame {
 				// enviar la reseña
 
 				try {
-					Resena resenaEscrita = captarTexto();
+					ResenaEscribir resenaEscrita = captarTexto();
 					cliente.enviar(new Gson().toJson(resenaEscrita).toString());
-					ventana.dispose();
+					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

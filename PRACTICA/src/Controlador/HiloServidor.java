@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import DAO.ResenaDAO;
 import DAO.UsuarioDAO;
 import Modelo.Resena;
+import Modelo.ResenaEscribir;
 import Modelo.Usuario;
 
 public class HiloServidor extends Thread {
@@ -36,7 +37,6 @@ public class HiloServidor extends Thread {
 			entrada = new BufferedReader(new InputStreamReader(socketServ.getInputStream()));
 			salida = new BufferedWriter(new OutputStreamWriter(socketServ.getOutputStream()));
 			loggin();
-			menuOpciones();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -76,7 +76,11 @@ public class HiloServidor extends Thread {
 			enviar(login);
 			while (login.equalsIgnoreCase("incorrecto")) {
 				String lecturaNueva = lectura();
-
+				
+				if (lecturaNueva.equalsIgnoreCase("reintentar")) {
+					
+					loggin();
+				}
 				if (lecturaNueva.equalsIgnoreCase("registro")) {
 					String nuevo = lectura();
 					Usuario nuevoRegistro = new Gson().fromJson(nuevo, Usuario.class);
@@ -84,13 +88,24 @@ public class HiloServidor extends Thread {
 					String pass = nuevoRegistro.getPass();
 					usuarioNombre = nombre;
 					Usuario nuevoUsuario = new Usuario(nombre, pass);
-					new UsuarioDAO().registrarUsuario(nuevoUsuario);
-					enviar("registrado");
-					login = null;
+					System.out.println(nuevoUsuario.toString());
+					if (new UsuarioDAO().registrarUsuario(nuevoUsuario)) {
+						enviar("registrado");
+						confirmado = true;
+						login = "correcto";
+						menuOpciones();
+					} else {
+						enviar("Registro fallido");
+					}
+
+				}
+
+				if (lecturaNueva == "reintentar") {
+
+					loggin();
+
 				}
 			}
-
-			menuOpciones();
 
 		}
 
@@ -132,14 +147,15 @@ public class HiloServidor extends Thread {
 		String opinion = null;
 		String nota = null;
 
-		Resena resenaNuevaRec = new Gson().fromJson(mensaje, Resena.class);
+		ResenaEscribir resenaNuevaRec = new Gson().fromJson(mensaje, ResenaEscribir.class);
 		System.out.println(resenaNuevaRec.toString());
 		lugar = resenaNuevaRec.getLugar();
 		valoracion = resenaNuevaRec.getCalificacion();
 		opinion = resenaNuevaRec.getOpinion();
-		nota = resenaNuevaRec.getNotas();
+		nota = resenaNuevaRec.getNota();
 
 		Resena resena = new Resena(lugar, valoracion, opinion, nota, usuarioNombre);
+		System.out.println(resena.toString());
 		new ResenaDAO().nuevo(resena);
 
 	}

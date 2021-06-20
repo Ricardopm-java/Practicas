@@ -41,6 +41,7 @@ public class VentanaOpinionesLugar extends JFrame {
 				try {
 					System.out.println(textoLugar.getText().toString());
 					cliente.enviar(textoLugar.getText());
+					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -50,7 +51,7 @@ public class VentanaOpinionesLugar extends JFrame {
 		});
 
 		this.add(principal);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 
 		pack();
 

@@ -54,6 +54,7 @@ public class VentanaInicial extends JFrame {
 				String total = usuario + "#" + contrasena;
 				try {
 					cliente.enviar(total);
+					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -62,8 +63,7 @@ public class VentanaInicial extends JFrame {
 		});
 		
 		this.add(principal);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		pack();
 
 	}
