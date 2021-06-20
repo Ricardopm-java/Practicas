@@ -131,6 +131,7 @@ public class HiloServidor extends Thread {
 			opinionesLugar();
 			break;
 		case "salir":
+			enviar("Hasta pronto");
 			socketServ.close();
 			break;
 

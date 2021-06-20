@@ -141,6 +141,9 @@ public class VentanaMenu extends JFrame {
 				eleccion = "salir";
 				try {
 					cliente.enviar(eleccion);
+					dispose();
+					cliente.cerrarAplicacion();
+					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

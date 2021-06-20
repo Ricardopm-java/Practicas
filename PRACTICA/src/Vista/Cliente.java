@@ -168,6 +168,14 @@ public class Cliente {
 		menu();
 
 	}
+	
+	public void cerrarAplicacion() throws IOException {
+		String mensaje = lectura(); //hasta pronto
+		new VentanaMostrar(mensaje);
+		socket.close();
+		
+		
+	}
 
 	/*
 	 * Si quiero enviar un dato en JSON: String json = new
