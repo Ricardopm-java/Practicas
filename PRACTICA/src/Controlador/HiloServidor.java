@@ -119,7 +119,7 @@ public class HiloServidor extends Thread {
 			escribirResena();
 			break;
 		case "lista":
-			listarUsuarios();
+			listarUsuarios(usuarioNombre);
 			break;
 		case "seguir":
 			seguirUsuario();
@@ -174,15 +174,15 @@ public class HiloServidor extends Thread {
 
 	}
 
-	private void listarUsuarios() throws IOException {
-		ArrayList<Usuario> resultado = new UsuarioDAO().listar();
+	private void listarUsuarios(String interesado) throws IOException {
+		ArrayList<Usuario> resultado = new UsuarioDAO().listar(interesado);
 		enviar(resultado.toString());
 
 	}
 
 	private void opinionesUsuario() throws IOException {
 
-		String consulta = entrada.readLine();
+		String consulta = entrada.readLine(); //viene el nombre del usuario que se quiere leer las reseñas
 		Usuario usuario = new Usuario(consulta.toLowerCase());
 		if (new UsuarioDAO().tieneResena(usuario)) {
 			ArrayList<Resena> opiniones = new ResenaDAO().opinionesUsuario(usuario);

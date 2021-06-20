@@ -18,13 +18,11 @@ public class VentanaOpinionesLugar extends JFrame {
 	public VentanaOpinionesLugar(Cliente cliente) {
 		super("Opiniones sobre un lugar");
 
-		JFrame ventana = new JFrame();
-		JPanel principal = new JPanel();
-		ventana.add(principal);
+		JPanel principal = new JPanel(new BorderLayout());
 		JLabel encabezado = new JLabel("De que lugar quieres conocer sus opiniones.");
 		principal.add(encabezado, BorderLayout.NORTH);
 
-		JPanel central = new JPanel();
+		JPanel central = new JPanel(new BorderLayout());
 		JLabel lugar = new JLabel("Lugar: ");
 		JTextField textoLugar = new JTextField(50);
 		central.add(lugar, BorderLayout.WEST);
@@ -34,13 +32,14 @@ public class VentanaOpinionesLugar extends JFrame {
 		JButton consultar = new JButton("Consultar");
 		principal.add(consultar, BorderLayout.SOUTH);
 
+		String lugarIndicado = textoLugar.getText();
+
 		consultar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					System.out.println(textoLugar.getText().toString());
-					cliente.enviar(textoLugar.getText());
+					cliente.enviar(lugarIndicado);
 					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -51,7 +50,6 @@ public class VentanaOpinionesLugar extends JFrame {
 		});
 
 		this.add(principal);
-		
 
 		pack();
 

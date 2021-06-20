@@ -136,9 +136,9 @@ public class Cliente {
 		try {
 			String mensaje = entrada.readLine();
 			ObjectMapper mapper = new ObjectMapper();
-			Resena[] lista = mapper.readValue(mensaje, Resena[].class);
+			Resena[] array = mapper.readValue(mensaje, Resena[].class);
 
-			new VentanaMostrar(lista.toString()).setVisible(true);
+			new VentanaMostrar(array.toString()).setVisible(true);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

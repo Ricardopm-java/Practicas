@@ -12,9 +12,7 @@ public class VentanaMostrar extends JFrame{
 	public VentanaMostrar(String resultadoRecibido) {
 		super("Resultados de la petición");
 		
-		JFrame ventana = new JFrame();
 		JPanel principal = new JPanel(new BorderLayout());
-		ventana.add(principal);
 		JScrollPane panelResultado = new JScrollPane();
 		JTextArea resultado = new JTextArea();
 		panelResultado.add(resultado);

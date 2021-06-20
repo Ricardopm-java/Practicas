@@ -13,47 +13,48 @@ import javax.swing.JTextField;
 
 import Vista.Cliente;
 
-public class VentanaOpinionesUsuario extends JFrame{
+public class VentanaOpinionesUsuario extends JFrame {
 
-	
-	
 	public VentanaOpinionesUsuario(Cliente cliente) {
 		super("Opiniones de los usuarios");
-		JFrame ventana = new JFrame();
-		JPanel principal = new JPanel();
-		ventana.add(principal);
+
+		JPanel principal = new JPanel(new BorderLayout());
+
 		JLabel encabezado = new JLabel("De quién quieres conocer sus opiniones.");
 		principal.add(encabezado, BorderLayout.NORTH);
+
+		JPanel central = new JPanel(new BorderLayout());
+		principal.add(central);
 		
-		JPanel central = new JPanel();
 		JLabel usuario = new JLabel("Usuario: ");
 		JTextField textoUsuario = new JTextField(20);
 		central.add(usuario, BorderLayout.WEST);
 		central.add(textoUsuario, BorderLayout.EAST);
-		principal.add(central);
+		
+		
+		String nombreConsultas = textoUsuario.getText();
 		
 		JButton consultar = new JButton("Consultar");
 		principal.add(consultar, BorderLayout.SOUTH);
-		
-		
+
 		consultar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					cliente.enviar(textoUsuario.getText());
+					cliente.enviar(nombreConsultas);
 					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
-		
+
 		this.add(principal);
 		
 		pack();
-		
+
 	}
 }

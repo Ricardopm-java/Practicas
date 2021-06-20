@@ -170,24 +170,24 @@ public class UsuarioDAO implements DAO<Usuario> {
 		return registrado;
 	}
 
-	@Override
-	public ArrayList<Usuario> listar() {
+	
+	public ArrayList<Usuario> listar(String interesado) {
 		ArrayList<Usuario> resultado = new ArrayList<Usuario>();
 		String SQL_SELECT = "{CALL F_USUARIOSREGISTRADOS (?) }";
 		try {
 
 			Connection conn = BBDD.get();
-			;
+			
 			// PreparedStatement st = conn.prepareStatement(SQL_SELECT);
 			CallableStatement st = conn.prepareCall(SQL_SELECT); // uno para el registro de actividad (entrada) y otro
 																	// para mostrar ne la lista (salida)
 
 			
-			st.setString(1, nombre);
+			st.setString(1, interesado);
 			// st.execute();
 			ResultSet resultSet = st.executeQuery(SQL_SELECT);
 			// String resul = st.getString(1);
-			while (resultSet!=null) {
+			while (resultSet.next()) {
 				resultado.add(recomponerUsuario(resultSet.getString("USUARIO")));
 			}
 		} catch (SQLException e) {
@@ -254,6 +254,12 @@ public class UsuarioDAO implements DAO<Usuario> {
 	public boolean seguir(String seguido) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public ArrayList<Usuario> listar() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

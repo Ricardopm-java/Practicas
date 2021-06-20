@@ -20,7 +20,7 @@ public class VentanaSeguir extends JFrame {
 	
 	public  VentanaSeguir(Cliente cliente) {
 		super("Ventana de seguimiento");
-		JFrame ventana = new JFrame();
+		
 		JPanel principal = new JPanel(new BorderLayout());
 		JLabel encabezado = new JLabel("Dime el nombre del usuario que deseas seguir");
 		principal.add(encabezado, BorderLayout.NORTH);

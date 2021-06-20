@@ -104,7 +104,7 @@ public class ResenaDAO implements DAO {
 				
 			}
 
-			conn.close();
+			
 
 		} catch (SQLException e) {
 			System.out.println("No se puede mostrar las reseñas.");
