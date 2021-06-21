@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import Modelo.BBDD;
 import Modelo.Resena;
 import Modelo.Usuario;
+import oracle.jdbc.OracleTypes;
 
 public class ResenaDAO implements DAO {
 	
@@ -27,7 +28,7 @@ public class ResenaDAO implements DAO {
 		try {
 			Connection conn = BBDD.get();
 			//PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
-			CallableStatement st = conn.prepareCall("{EXECUTE P_REGISTRAR_RESENAS (?,?,?,?,?)}");
+			CallableStatement st = conn.prepareCall("CALL P_REGISTRAR_RESENAS (?,?,?,?,?)");
 			System.out.println(resena.toString());
 			st.setString(1, resena.getUsuario());
 			st.setString(2, resena.getLugar());
@@ -37,7 +38,7 @@ public class ResenaDAO implements DAO {
 			
 			int filaInsertada = st.executeUpdate(); // ejecutamos la sentencia
 			
-			if(filaInsertada == 1) resenaGuardada = true;
+			 resenaGuardada = true;
 			
 			
 		} catch (SQLException e) {
@@ -58,26 +59,24 @@ public class ResenaDAO implements DAO {
 	}
 
 	
-	public ArrayList<Resena> opinionesLugar(String lugar) {
+	public ArrayList<Resena> opinionesLugar(String lugar, String usuario) {
 		ArrayList<Resena> resultado = new ArrayList<Resena>();
 		
 		try {
 			Connection conn = BBDD.get();
-			CallableStatement st = conn.prepareCall( "{CALL F_RESENASPORLUGAR (?,?,?,?,?) }");
-			st.registerOutParameter(1, Types.VARCHAR);
-			st.registerOutParameter(2, Types.VARCHAR);
-			st.registerOutParameter(3, Types.VARCHAR);
-			st.registerOutParameter(4, Types.VARCHAR);
-			st.setString(5, lugar);
-			
-			ResultSet rs = st.executeQuery();
+			CallableStatement st = conn.prepareCall( "{? = call F_RESENAPORLUGAR (?,?)}");
+			st.registerOutParameter(1, OracleTypes.CURSOR);
+			st.setString(2, lugar);
+			st.setString(3, usuario);
+			st.execute();
+			ResultSet rs = (ResultSet) st.getObject(1);
 			
 			while(rs.next()) {
 				
-				resultado.add(new Resena(st.getString(1), st.getString(2), st.getString(3), st.getString(4)));
+				resultado.add(new Resena(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
 			}
 		}catch(SQLException e) {
-			e.getMessage();
+			e.printStackTrace();
 		}
 		
 		return resultado;

@@ -16,7 +16,6 @@ import Vista.Cliente;
 public class VentanaSeguir extends JFrame {
 
 	private String nombreASeguir;
-	private Cliente cliente;
 	
 	public  VentanaSeguir(Cliente cliente) {
 		super("Ventana de seguimiento");
@@ -32,7 +31,7 @@ public class VentanaSeguir extends JFrame {
 		central.add(textoNombre, BorderLayout.WEST);
 		principal.add(central, BorderLayout.CENTER);
 		
-		nombreASeguir = textoNombre.getText();
+		
 		
 		JButton seguir = new JButton("Seguir");
 		principal.add(seguir, BorderLayout.SOUTH);	
@@ -41,6 +40,7 @@ public class VentanaSeguir extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					nombreASeguir = textoNombre.getText();
 					cliente.enviar(nombreASeguir);
 					dispose();
 				} catch (IOException e1) {

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import Modelo.BBDD;
 import Modelo.Usuario;
+import oracle.jdbc.OracleTypes;
 
 public class UsuarioDAO implements DAO<Usuario> {
 
@@ -155,7 +156,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 //			PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 //			preparedStatement.executeUpdate();
 
-			CallableStatement st = conn.prepareCall("{EXECUTE P_REGISTRAR_USUARIO (?,?) }");
+			CallableStatement st = conn.prepareCall("{CALL P_REGISTRAR_USUARIO (?,?) }");
 
 			st.setString(1, usuario.getUsuario());
 			st.setString(2, usuario.getPass());
@@ -173,7 +174,7 @@ public class UsuarioDAO implements DAO<Usuario> {
 	
 	public ArrayList<Usuario> listar(String interesado) {
 		ArrayList<Usuario> resultado = new ArrayList<Usuario>();
-		String SQL_SELECT = "{CALL F_USUARIOSREGISTRADOS (?) }";
+		String SQL_SELECT = "{? = call F_USUARIOSREGISTRADOS (?) }";
 		try {
 
 			Connection conn = BBDD.get();
@@ -181,11 +182,11 @@ public class UsuarioDAO implements DAO<Usuario> {
 			// PreparedStatement st = conn.prepareStatement(SQL_SELECT);
 			CallableStatement st = conn.prepareCall(SQL_SELECT); // uno para el registro de actividad (entrada) y otro
 																	// para mostrar ne la lista (salida)
-
-			
-			st.setString(1, interesado);
+			st.registerOutParameter(1, OracleTypes.CURSOR);
+			st.setString(2, interesado);
+			st.execute();
 			// st.execute();
-			ResultSet resultSet = st.executeQuery(SQL_SELECT);
+			ResultSet resultSet = (ResultSet) st.getObject(1);
 			// String resul = st.getString(1);
 			while (resultSet.next()) {
 				resultado.add(recomponerUsuario(resultSet.getString("USUARIO")));
@@ -212,7 +213,8 @@ public class UsuarioDAO implements DAO<Usuario> {
 				try {
 					Connection conn = BBDD.get();
 
-					CallableStatement st = conn.prepareCall("{EXECUTE P_SEGUIR (?,?)}");
+					CallableStatement st = conn.prepareCall("{call P_SEGUIR (?,?)}");
+					System.out.println(usuario+seguido);
 					st.setString(1, usuario);
 					st.setString(2, seguido);
 					st.executeUpdate();

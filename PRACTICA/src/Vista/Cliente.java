@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -98,7 +99,7 @@ public class Cliente {
 
 	private void escribirResena() throws IOException {
 		new VentanaResena(this).setVisible(true);
-		menu();
+		
 
 	}
 
@@ -108,9 +109,9 @@ public class Cliente {
 
 		String[] arraylectura = mensaje.split(" ");
 
-		new VentanaMostrar(arraylectura.toString()).setVisible(true);
+		new VentanaMostrar(Arrays.toString(arraylectura)).setVisible(true);
 
-		menu();
+		
 
 	}
 
@@ -125,47 +126,22 @@ public class Cliente {
 			new VentanaMostrar("No se ha podido añadir a este usuario a tu lista de seguidos");
 		}
 
-		menu();
+		
 
 	}
 
 	public void opinionesUsuario() {
 
 		new VentanaOpinionesUsuario(this).setVisible(true);
-
-		try {
-			String mensaje = entrada.readLine();
-			ObjectMapper mapper = new ObjectMapper();
-			Resena[] array = mapper.readValue(mensaje, Resena[].class);
-
-			new VentanaMostrar(array.toString()).setVisible(true);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		menu();
+		
 
 	}
 
 	public void opninionesLugar() {
 
-		try {
 
 			new VentanaOpinionesLugar(this).setVisible(true);
-			String mensaje = lectura();
-			ObjectMapper mapper = new ObjectMapper();
-			Resena[] lista = mapper.readValue(mensaje, Resena[].class);
 
-			new VentanaMostrar(lista.toString()).setVisible(true);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		menu();
 
 	}
 	

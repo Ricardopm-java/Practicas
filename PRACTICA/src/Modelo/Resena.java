@@ -32,6 +32,8 @@ public class Resena {
 		this.calificacion = calificacion;
 		this.opinion = opinion;
 	}
+	
+	public Resena() {}
 
 	public String getLugar() {
 		return lugar;

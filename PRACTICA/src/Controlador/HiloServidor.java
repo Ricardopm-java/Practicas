@@ -112,30 +112,39 @@ public class HiloServidor extends Thread {
 	}
 
 	private void menuOpciones() throws IOException {
-		String eleccion = entrada.readLine();
+		boolean salir = false;
+		do {
+			String eleccion = entrada.readLine();
 
-		switch (eleccion) {
-		case "resena":
-			escribirResena();
-			break;
-		case "lista":
-			listarUsuarios(usuarioNombre);
-			break;
-		case "seguir":
-			seguirUsuario();
-			break;
-		case "opiniones":
-			opinionesUsuario();
-			break;
-		case "lugar":
-			opinionesLugar();
-			break;
-		case "salir":
-			enviar("Hasta pronto");
-			socketServ.close();
-			break;
+			switch (eleccion) {
+			case "resena":
+				escribirResena();
+				break;
+			case "lista":
+				listarUsuarios(usuarioNombre);
 
-		}
+				break;
+			case "seguir":
+				seguirUsuario();
+
+				break;
+			case "opiniones":
+				opinionesUsuario();
+
+				break;
+			case "lugar":
+				opinionesLugar();
+
+				break;
+			case "salir":
+				salir = true;
+				enviar("Hasta pronto");
+				socketServ.close();
+				break;
+
+			}
+		} while(!salir);
+		
 
 	}
 
@@ -196,7 +205,7 @@ public class HiloServidor extends Thread {
 
 		String consulta = lectura();
 		if (new ResenaDAO().comprobarLugar(consulta)) {
-			ArrayList<Resena> opiniones = new ResenaDAO().opinionesLugar(consulta);
+			ArrayList<Resena> opiniones = new ResenaDAO().opinionesLugar(consulta, usuarioNombre);
 			enviar(new Gson().toJson(opiniones).toString());
 		}
 
